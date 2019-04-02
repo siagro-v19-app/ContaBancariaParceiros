@@ -1,0 +1,84 @@
+<mvc:View xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	displayBlock="true"
+	controllerName="br.com.idxtecContaBancariaParceiros.controller.GravarContaBancaria"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	width="100%"
+	height="100%"
+	xmlns:f="sap.ui.layout.form">
+	<App>
+		<pages>
+			<Page showHeader="false"> 
+				<content>
+					<VBox class="sapUiSmallMargin">
+						<Panel headerText="Conta Bancária - Parceiros">
+							<f:SimpleForm id="formContaBancaria" class="sapUiSmallMargin"
+								editable="true"
+								layout="ResponsiveGridLayout"
+								labelSpanXL="4"
+								labelSpanL="4"
+								labelSpanM="4"
+								labelSpanS="12"
+								adjustLabelSpan="false"
+								emptySpanXL="0"
+								emptySpanL="0"
+								emptySpanM="0"
+								emptySpanS="0"
+								columnsXL="3"
+								columnsL="2"
+								columnsM="2"
+								singleContainerFullSize="false">
+							<f:content>
+								<core:Title text="{view>/titulo}"/>
+								<Label text="Parceiro de Negócio" labelFor="parceironegocio" design="Bold"/>
+								<Input selectedKey="{model>/Parceiro}"
+									textFormatMode="KeyValue"
+									showSuggestion="true"
+									showValueHelp="true"
+									valueHelpRequest="handleSearchParceiro"
+									suggestionItems="{
+										path: '/ParceiroNegocios',
+										events: {
+											dataReceived: '.parceiroNegocioReceived'
+										}}"
+									id="parceironegocio"
+									required="true">
+									<suggestionItems>
+										<core:ListItem key="{Id}" text="{RazaoSocial}"/>
+									</suggestionItems>
+								</Input>
+								
+								<Label text="Titular" labelFor="titular" design="Bold"/>
+								<Input id="titular" value="{model>/Titular}" required="true"/>
+								
+								<Label text="Banco" labelFor="banco" design="Bold"/>
+								<Input id="banco" value="{model>/Banco}" required="true"/>
+						
+								<Label text="Agência" labelFor="agencia" design="Bold"/>
+								<Input id="agencia" value="{model>/Agencia}" required="true"/>
+								
+								<Label text="Conta corrente" labelFor="contacorrente" design="Bold"/>
+								<Input id="contacorrente" value="{model>/ContaCorrente}" required="true"/>
+								
+								<Label text="CNPJ" labelFor="cnpj" design="Bold"/>
+								<Input id="cnpj" value="{model>/Cnpj}"/>
+								
+								<Label text="CPF" labelFor="cpf" design="Bold"/>
+								<Input id="cpf" value="{model>/Cpf}"/>
+							</f:content>
+							</f:SimpleForm>
+						</Panel>
+					</VBox>
+				</content>
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="Salvar" icon="sap-icon://save" press="onSalvar"/>
+						<Button text="Cancelar" icon="sap-icon://reset" press="onVoltar"/>
+					</Toolbar>
+				</footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
