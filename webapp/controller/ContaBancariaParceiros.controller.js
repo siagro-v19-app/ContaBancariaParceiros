@@ -19,7 +19,7 @@ sap.ui.define([
 			this.getView().byId("tableContaBancaria").clearSelection();
 		},
 		
-		onIncluirConta: function(){
+		onIncluir: function(){
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			var oTable = this.byId("tableContaBancaria"); 
 			
@@ -30,7 +30,7 @@ sap.ui.define([
 			oTable.clearSelection();
 		},
 		
-		onEditarConta: function(){
+		onEditar: function(){
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			var oTable = this.byId("tableContaBancaria");
 			var nIndex = oTable.getSelectedIndex();
@@ -48,27 +48,27 @@ sap.ui.define([
 			oTable.clearSelection();
 		},
 		
-		onExcluirConta: function(e){
+		onRemover: function(e){
 			var that = this;
 			var oTable = this.byId("tableContaBancaria");
 			var nIndex = oTable.getSelectedIndex();
 			
 			if (nIndex === -1){
-				MessageBox.warning("Selecione uma conta na tabela.");
+				MessageBox.warning("Selecione uma conta da tabela.");
 				return;
 			}
 			
 			MessageBox.confirm("Deseja remover esta conta?", {
 				onClose: function(sResposta){
 					if(sResposta === "OK"){
-						that._excluir(oTable, nIndex);
+						that._remover(oTable, nIndex);
 						MessageBox.success("Conta removida com sucesso!");
 					}
 				}
 			});
 		},
 		
-		_excluir: function(oTable, nIndex){
+		_remover: function(oTable, nIndex){
 			var oModel = this.getOwnerComponent().getModel();
 			var oContext = oTable.getContextByIndex(nIndex);
 			
@@ -76,9 +76,6 @@ sap.ui.define([
 				success: function(){
 					oModel.refresh(true);
 					oTable.clearSelection();
-				},
-				error: function(oError){
-					MessageBox.error(oError.responseText);
 				}
 			});
 		}

@@ -3,8 +3,9 @@ sap.ui.define([
 	"sap/ui/core/routing/History",
 	"sap/m/MessageBox",
 	"sap/ui/model/json/JSONModel",
-	"idxtec/lib/fragment/ParceiroNegocioHelpDialog"
-], function(Controller, History, MessageBox, JSONModel, ParceiroNegocioHelpDialog) {
+	"br/com/idxtecContaBancariaParceiros/helpers/ParceiroNegocioHelpDialog",
+	"br/com/idxtecContaBancariaParceiros/services/Session"
+], function(Controller, History, MessageBox, JSONModel, ParceiroNegocioHelpDialog, Session) {
 	"use strict";
 
 	return Controller.extend("br.com.idxtecContaBancariaParceiros.controller.GravarContaBancaria", {
@@ -21,13 +22,13 @@ sap.ui.define([
 			this.getOwnerComponent().setModel(oJSONModel,"model");
 		},
 		
-		handleSearchParceiro: function(oEvent){
-			var oHelp = new ParceiroNegocioHelpDialog(this.getView(), "parceironegocio");
-			oHelp.getDialog().open();
+		parceiroNegocioReceived: function() {
+			this.getView().byId("parceironegocio").setSelectedKey(this.getModel("model").getProperty("/Parceiro"));
 		},
 		
-		parceiroNegocioReceived: function() {
-			this.getView().byId("parceironegocio").setSelectedKey(this.getOwnerComponent().getModel("model").getProperty("/Parceiro"));
+		handleSearchParceiro: function(oEvent){
+			var sInputId = oEvent.getParameter("id");
+			ParceiroNegocioHelpDialog.handleValueHelp(this.getView(), sInputId, this);
 		},
 		
 		_routerMatch: function(){
@@ -55,7 +56,11 @@ sap.ui.define([
 					"Agencia": "",
 					"ContaCorrente": "",
 					"Cnpj": "",
-					"Cpf": ""
+					"Cpf": "",
+					"Empresa" : Session.get("EMPRESA_ID"),
+					"Usuario": Session.get("USUARIO_ID"),
+					"EmpresaDetails": { __metadata: { uri: "/Empresas(" + Session.get("EMPRESA_ID") + ")"}},
+					"UsuarioDetails": { __metadata: { uri: "/Usuarios(" + Session.get("USUARIO_ID") + ")"}}
 				};
 				
 				oJSONModel.setData(oNovaConta);
@@ -69,9 +74,6 @@ sap.ui.define([
 				oModel.read(oParam.sPath,{
 					success: function(oData) {
 						oJSONModel.setData(oData);
-					},
-					error: function(oError) {
-						MessageBox.error(oError.responseText);
 					}
 				});
 			}
@@ -106,14 +108,14 @@ sap.ui.define([
 			var oJSONModel = this.getOwnerComponent().getModel("model");
 			var oDados = oJSONModel.getData();
 			
-			oDados.Parceiro = oDados.Parceiro ? parseInt(oDados.Parceiro, 0) : 0;
+			oDados.Parceiro = oDados.Parceiro ? oDados.Parceiro : 0;
 			
 			oDados.ParceiroNegocioDetails = {
 				__metadata: {
 					uri: "/ParceiroNegocios(" + oDados.Parceiro + ")"
 				}
 			};
-			debugger;
+
 			return oDados;
 		},
 		
@@ -128,9 +130,6 @@ sap.ui.define([
 							that._goBack();
 						}
 					});
-				},
-				error: function(oError) {
-					MessageBox.error(oError.responseText);
 				}
 			});
 		},
@@ -146,9 +145,6 @@ sap.ui.define([
 							that._goBack();
 						}
 					});
-				},
-				error: function(oError) {
-					MessageBox.error(oError.responseText);
 				}
 			});
 		},
@@ -165,6 +161,10 @@ sap.ui.define([
 		
 		onVoltar: function(){
 			this._goBack();
+		},
+		
+		getModel: function(sModel) {
+			return this.getOwnerComponent().getModel(sModel);
 		}
 	});
 

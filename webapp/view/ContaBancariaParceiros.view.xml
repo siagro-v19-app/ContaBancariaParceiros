@@ -30,7 +30,7 @@
 								enableCustomFilter="false">
 								<t:toolbar>
 									<Toolbar>
-										<Title text="Listagem de Contas Bancárias"/> 
+										<Title text="Lista de Contas Bancárias"/> 
 										<ToolbarSpacer/>
 									</Toolbar>
 								</t:toolbar>
@@ -66,18 +66,6 @@
 											<Text text="{ContaCorrente}"/>
 										</t:template>
 									</t:Column>
-									<t:Column filterProperty="Cnpj" sortProperty="Cnpj">
-											<Label text="CNPJ"/>
-										<t:template>
-											<Text text="{Cnpj}"/>
-										</t:template>
-									</t:Column>
-									<t:Column filterProperty="Cpf" sortProperty="Cpf">
-											<Label text="CPF"/>
-										<t:template>
-											<Text text="{Cpf}"/>
-										</t:template>
-									</t:Column>
 								</t:columns>
 								<t:footer>
 									<Toolbar>
@@ -94,9 +82,9 @@
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-						<Button icon="sap-icon://add" text="Incluir Novo" press="onIncluirConta"/>
-						<Button icon="sap-icon://edit" text="Editar" press="onEditarConta"/>
-						<Button icon="sap-icon://delete" text="Excluir" press="onExcluirConta"/>
+						<Button icon="sap-icon://add" text="Incluir Novo" press="onIncluir"/>
+						<Button icon="sap-icon://edit" text="Editar" press="onEditar"/>
+						<Button icon="sap-icon://delete" text="Excluir" press="onRemover"/>
 					</Toolbar>
 				</footer>
 			</Page>
