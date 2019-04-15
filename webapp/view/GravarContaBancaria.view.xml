@@ -12,7 +12,7 @@
 			<Page showHeader="false"> 
 				<content>
 					<VBox class="sapUiSmallMargin">
-						<Panel headerText="Conta Bancária - Parceiros">
+						<Panel headerText="{view>/titulo}">
 							<f:SimpleForm id="formContaBancaria" class="sapUiSmallMargin"
 								editable="true"
 								layout="ResponsiveGridLayout"
@@ -30,7 +30,6 @@
 								columnsM="2"
 								singleContainerFullSize="false">
 								<f:content>
-									<core:Title text="{view>/titulo}"/>
 									<Label text="Parceiro de Negócio" labelFor="parceironegocio" design="Bold"/>
 									<Input selectedKey="{path: 'model>/Parceiro', type: 'sap.ui.model.odata.type.Int32'}"
 										textFormatMode="KeyValue"
@@ -74,8 +73,8 @@
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-						<Button text="Salvar" icon="sap-icon://save" press="onSalvar"/>
-						<Button text="Cancelar" icon="sap-icon://reset" press="onVoltar"/>
+						<Button text="Salvar" press="onSalvar" type="Accept"/>
+   						<Button text="Fechar" press="onVoltar" type="Reject"/>
 					</Toolbar>
 				</footer>
 			</Page>

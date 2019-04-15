@@ -115,7 +115,7 @@ sap.ui.define([
 					uri: "/ParceiroNegocios(" + oDados.Parceiro + ")"
 				}
 			};
-
+			debugger;
 			return oDados;
 		},
 		

@@ -1,8 +1,11 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"sap/m/MessageBox"
-], function(Controller, JSONModel, MessageBox) {
+	"sap/m/MessageBox",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"br/com/idxtecContaBancariaParceiros/services/Session"
+], function(Controller, JSONModel, MessageBox , Filter, FilterOperator, Session) {
 	"use strict";
 
 	return Controller.extend("br.com.idxtecContaBancariaParceiros.controller.ContaBancariaParceiros", {
@@ -11,6 +14,29 @@ sap.ui.define([
 			
 			this.getOwnerComponent().setModel(oParamModel, "parametros");
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
+			
+			this.getModel().attachMetadataLoaded(function(){
+				var oFilter = new Filter("Empresa", FilterOperator.EQ, Session.get("EMPRESA_ID"));
+				var oView = this.getView();
+				var oTable = oView.byId("tableContaBancaria");
+				var oColumn = oView.byId("columnRazao");
+				
+				oTable.sort(oColumn);
+				oView.byId("tableContaBancaria").getBinding("rows").filter(oFilter, "Application");
+			});
+		},
+		
+		filtraConta: function(oEvent){
+			var sQuery = oEvent.getParameter("query");
+			var oFilter1 = new Filter("Empresa", FilterOperator.EQ, Session.get("EMPRESA_ID"));
+			var oFilter2 = new Filter("RazaoSocial", FilterOperator.Contains, sQuery);
+			
+			var aFilters = [
+				oFilter1,
+				oFilter2
+			];
+
+			this.getView().byId("tableContaBancaria").getBinding("rows").filter(aFilters, "Application");
 		},
 		
 		onRefresh: function(e){
@@ -78,6 +104,10 @@ sap.ui.define([
 					oTable.clearSelection();
 				}
 			});
+		},
+		
+		getModel: function(sModel) {
+			return this.getOwnerComponent().getModel(sModel);
 		}
 	});
 });
