@@ -15,21 +15,26 @@ sap.ui.define([
 			this.getOwnerComponent().setModel(oParamModel, "parametros");
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 			
-			this.getModel().attachMetadataLoaded(function(){
-				var oFilter = new Filter("Empresa", FilterOperator.EQ, Session.get("EMPRESA_ID"));
-				var oView = this.getView();
-				var oTable = oView.byId("tableContaBancaria");
-				var oColumn = oView.byId("columnRazao");
-				
-				oTable.sort(oColumn);
-				oView.byId("tableContaBancaria").getBinding("rows").filter(oFilter, "Application");
+			var oFilter = new Filter("Empresa", FilterOperator.EQ, Session.get("EMPRESA_ID"));
+			var oView = this.getView();
+			var oTable = oView.byId("tableContaBancaria");
+			
+			oTable.bindRows({ 
+				path: '/ContaBancariaParceiross',
+					sorter: {
+						path: 'ParceiroNegocioDetails/RazaoSocial'
+				},
+				parameters: {
+					expand: 'ParceiroNegocioDetails'
+				},
+				filters: oFilter
 			});
 		},
 		
 		filtraConta: function(oEvent){
-			var sQuery = oEvent.getParameter("query");
+			var sQuery = oEvent.getParameter("query").toUpperCase();
 			var oFilter1 = new Filter("Empresa", FilterOperator.EQ, Session.get("EMPRESA_ID"));
-			var oFilter2 = new Filter("RazaoSocial", FilterOperator.Contains, sQuery);
+			var oFilter2 = new Filter("ParceiroNegocioDetails/RazaoSocial", FilterOperator.Contains, sQuery);
 			
 			var aFilters = [
 				oFilter1,
